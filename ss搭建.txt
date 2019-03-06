@@ -1,0 +1,67 @@
+拥有一个外网服务器
+
+首先下载
+wget --no-check-certificate  https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh  
+
+给权限
+chmod +x shadowsocks.sh
+
+执行，按任意键后等待，最后出现密码保存
+./shadowsocks.sh 2>&1 | tee shadowsocks.log
+
+配置文件
+vi /etc/shadowsocks.json
+
+可开多个端口
+
+{
+    
+    "server":"0.0.0.0",
+    
+    "local_address":"127.0.0.1",
+    
+    "local_port":1080,
+    
+    "port_password":{
+          
+        "8989":"password0",
+         
+        "9001":"password1",
+         
+        "9002":"password2",
+         
+        "9003":"password3",
+         
+        "9004":"password4"
+    
+    },
+    
+    "timeout":300,
+    
+    "method":"aes-256-cfb",
+    
+    "fast_open": false
+
+｝
+
+多端口需要重启
+/etc/init.d/shadowsocks restart
+
+优化网速，查看一下glibc的版本号（2.17），centOS7服务器版本
+ldd --version
+
+下载并执行脚本
+
+wget https://raw.githubusercontent.com/kuoruan/shell-scripts/master/ovz-bbr/ovz-bbr-installer.sh 
+
+chmod +x ovz-bbr-installer.sh 
+
+./ovz-bbr-installer.sh
+
+多端口需要修改脚本
+vim /usr/local/haproxy-lkl/etc/port-rules
+
+然后启动，停止，重启随便选，去除{}，剩下一个单词就ok
+
+systemctl {start|stop|restart} haproxy-lkl
+service haproxy-lkl {start|stop|restart}
